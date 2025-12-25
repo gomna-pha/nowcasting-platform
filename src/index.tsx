@@ -60,6 +60,25 @@ app.get('/api/prediction', (c) => {
   })
 })
 
+app.get('/api/dnn', (c) => {
+  const layers = 4
+  const totalNodes = 224
+  const accuracy = (Math.random() * 3 + 64).toFixed(1)
+  const latency = Math.floor(Math.random() * 5 + 13)
+  const precision = (Math.random() * 3 + 62).toFixed(1)
+  const recall = (Math.random() * 3 + 67).toFixed(1)
+
+  return c.json({
+    layers,
+    totalNodes,
+    accuracy,
+    latency,
+    precision,
+    recall,
+    timestamp: new Date().toISOString()
+  })
+})
+
 app.get('/api/sentiment', (c) => {
   const shuffled = [...newsHeadlines].sort(() => Math.random() - 0.5).slice(0, 5)
   
@@ -506,19 +525,19 @@ app.get('/', (c) => {
                 </h3>
                 <div class="metrics-grid">
                     <div class="metric">
-                        <div class="metric-value" id="dnnLayers">4</div>
+                        <div class="metric-value" id="dnnLayers">-</div>
                         <div class="metric-label">Network Layers</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value" id="dnnNodes">224</div>
+                        <div class="metric-value" id="dnnNodes">-</div>
                         <div class="metric-label">Total Nodes</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value" id="dnnAccuracy">65.8%</div>
+                        <div class="metric-value" id="dnnAccuracy">-</div>
                         <div class="metric-label">Accuracy</div>
                     </div>
                     <div class="metric">
-                        <div class="metric-value" id="dnnLatency">15ms</div>
+                        <div class="metric-value" id="dnnLatency">-</div>
                         <div class="metric-label">Latency</div>
                     </div>
                 </div>
@@ -760,8 +779,19 @@ app.get('/', (c) => {
         }
         
         // Update DNN metrics
-        function updateDNNMetrics() {
-            document.getElementById('dnnTimestamp').textContent = formatTimestamp(new Date());
+        async function updateDNNMetrics() {
+            try {
+                const response = await fetch('/api/dnn');
+                const data = await response.json();
+                
+                document.getElementById('dnnLayers').textContent = data.layers;
+                document.getElementById('dnnNodes').textContent = data.totalNodes;
+                document.getElementById('dnnAccuracy').textContent = data.accuracy + '%';
+                document.getElementById('dnnLatency').textContent = data.latency + 'ms';
+                document.getElementById('dnnTimestamp').textContent = formatTimestamp(new Date());
+            } catch (error) {
+                console.error('Error fetching DNN metrics:', error);
+            }
         }
         
         // Initialize everything when page loads
@@ -775,6 +805,7 @@ app.get('/', (c) => {
             // Update every 5 seconds
             setInterval(updatePrediction, 5000);
             setInterval(refreshSentiment, 10000);
+            setInterval(updateDNNMetrics, 8000);
         });
         
         // Redraw charts on resize
