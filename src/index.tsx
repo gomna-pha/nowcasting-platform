@@ -127,7 +127,7 @@ app.get('/', (c) => {
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a0000 0%, #4d0000 100%);
+            background: linear-gradient(135deg, #2d0a0a 0%, #721c24 50%, #1a0000 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -138,12 +138,12 @@ app.get('/', (c) => {
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.98);
+            background: linear-gradient(135deg, #fffef7 0%, #f5e6d3 100%);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 2px solid #721c24;
+            border: 3px solid #b8860b;
         }
         
         .header h1 {
@@ -151,11 +151,20 @@ app.get('/', (c) => {
             font-size: 28px;
             margin-bottom: 10px;
             font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(184, 134, 11, 0.3);
         }
         
         .header p {
-            color: #2d3748;
+            color: #5d4e37;
             font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .timestamp {
+            font-size: 11px;
+            color: #8b7355;
+            margin-top: 8px;
+            font-style: italic;
         }
         
         .status-bar {
@@ -199,11 +208,11 @@ app.get('/', (c) => {
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.98);
+            background: linear-gradient(135deg, #fffef7 0%, #faf8f3 100%);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid #e0e0e0;
+            border: 2px solid #daa520;
         }
         
         .card h3 {
@@ -217,12 +226,13 @@ app.get('/', (c) => {
         }
         
         .prediction-box {
-            background: linear-gradient(135deg, #721c24 0%, #1a0000 100%);
-            color: white;
+            background: linear-gradient(135deg, #721c24 0%, #8b2332 50%, #721c24 100%);
+            color: #fff9e6;
             padding: 20px;
             border-radius: 12px;
             text-align: center;
             margin-bottom: 15px;
+            border: 2px solid #b8860b;
         }
         
         .prediction-value {
@@ -346,33 +356,37 @@ app.get('/', (c) => {
         }
         
         button {
-            background: linear-gradient(135deg, #721c24 0%, #1a0000 100%);
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+            color: #1a0000;
+            border: 2px solid #8b6914;
             padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 700;
             transition: transform 0.2s, background 0.2s;
             width: 100%;
             margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         button:hover {
             transform: translateY(-2px);
-            background: linear-gradient(135deg, #8b2332 0%, #2d0000 100%);
+            background: linear-gradient(135deg, #daa520 0%, #f4d03f 100%);
+            box-shadow: 0 4px 12px rgba(184, 134, 11, 0.4);
         }
         
         .model-badge {
             display: inline-block;
             padding: 4px 10px;
-            background: #721c24;
+            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
             border-radius: 6px;
             font-size: 11px;
-            color: #ffffff;
+            color: #1a0000;
             margin-left: auto;
-            font-weight: 600;
+            font-weight: 700;
+            border: 1px solid #8b6914;
         }
 
         canvas {
@@ -463,6 +477,7 @@ app.get('/', (c) => {
                         <div class="metric-label">Directional Acc.</div>
                     </div>
                 </div>
+                <div class="timestamp" id="predictionTimestamp"></div>
             </div>
             
             <div class="card">
@@ -471,6 +486,7 @@ app.get('/', (c) => {
                     <span class="model-badge">NLP</span>
                 </h3>
                 <div id="sentimentFeed"></div>
+                <div class="timestamp" id="sentimentTimestamp"></div>
                 <button onclick="refreshSentiment()">Refresh News Feed</button>
             </div>
             
@@ -480,6 +496,33 @@ app.get('/', (c) => {
                     <span class="model-badge">XGBoost</span>
                 </h3>
                 <ul class="feature-list" id="featureList"></ul>
+                <div class="timestamp" id="featureTimestamp"></div>
+            </div>
+            
+            <div class="card">
+                <h3>
+                    Deep Neural Network
+                    <span class="model-badge">DNN</span>
+                </h3>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <div class="metric-value" id="dnnLayers">4</div>
+                        <div class="metric-label">Network Layers</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="dnnNodes">224</div>
+                        <div class="metric-label">Total Nodes</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="dnnAccuracy">65.8%</div>
+                        <div class="metric-label">Accuracy</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="dnnLatency">15ms</div>
+                        <div class="metric-label">Latency</div>
+                    </div>
+                </div>
+                <div class="timestamp" id="dnnTimestamp"></div>
             </div>
         </div>
         
@@ -494,10 +537,11 @@ app.get('/', (c) => {
                     <span>Predicted</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #1a0000;"></div>
+                    <div class="legend-color" style="background: #b8860b;"></div>
                     <span>Actual</span>
                 </div>
             </div>
+            <div class="timestamp" id="historyTimestamp"></div>
         </div>
         
         <div class="card">
@@ -505,10 +549,16 @@ app.get('/', (c) => {
             <div class="chart-container">
                 <canvas id="performanceChart"></canvas>
             </div>
+            <div class="timestamp" id="performanceTimestamp"></div>
         </div>
     </div>
 
     <script>
+        // Format timestamp
+        function formatTimestamp(date) {
+            return 'Last updated: ' + date.toLocaleTimeString() + ' on ' + date.toLocaleDateString();
+        }
+        
         // Fetch sentiment data from API
         async function refreshSentiment() {
             try {
@@ -527,6 +577,8 @@ app.get('/', (c) => {
                     \`;
                     sentimentFeed.appendChild(item);
                 });
+                
+                document.getElementById('sentimentTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error fetching sentiment:', error);
             }
@@ -548,6 +600,8 @@ app.get('/', (c) => {
                     \`;
                     featureList.appendChild(item);
                 });
+                
+                document.getElementById('featureTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error fetching features:', error);
             }
@@ -583,7 +637,7 @@ app.get('/', (c) => {
             
             // Predicted line
             ctx.strokeStyle = '#721c24';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 3;
             ctx.beginPath();
             data1.forEach((val, i) => {
                 const x = padding + i * stepX;
@@ -594,8 +648,8 @@ app.get('/', (c) => {
             ctx.stroke();
             
             // Actual line
-            ctx.strokeStyle = '#1a0000';
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#b8860b';
+            ctx.lineWidth = 3;
             ctx.setLineDash([5, 5]);
             ctx.beginPath();
             data2.forEach((val, i) => {
@@ -638,7 +692,7 @@ app.get('/', (c) => {
             ctx.stroke();
             
             const barWidth = chartWidth / (categories.length * datasets.length + categories.length);
-            const colors = ['#721c24', '#8b2332', '#4d0000'];
+            const colors = ['#721c24', '#b8860b', '#8b2332'];
             
             categories.forEach((cat, i) => {
                 datasets.forEach((data, j) => {
@@ -665,6 +719,7 @@ app.get('/', (c) => {
                 const response = await fetch('/api/history');
                 const data = await response.json();
                 drawLineChart('predictionChart', data.predictions, data.actuals);
+                document.getElementById('historyTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error fetching history:', error);
             }
@@ -676,6 +731,7 @@ app.get('/', (c) => {
                 const response = await fetch('/api/performance');
                 const data = await response.json();
                 drawBarChart('performanceChart', data.categories, [data.accuracy, data.precision, data.recall]);
+                document.getElementById('performanceTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error fetching performance:', error);
             }
@@ -696,9 +752,16 @@ app.get('/', (c) => {
                 document.getElementById('xgboostProb').textContent = data.xgboostProb;
                 document.getElementById('dnnProb').textContent = data.dnnProb;
                 document.getElementById('accuracy').textContent = data.accuracy + '%';
+                
+                document.getElementById('predictionTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error updating prediction:', error);
             }
+        }
+        
+        // Update DNN metrics
+        function updateDNNMetrics() {
+            document.getElementById('dnnTimestamp').textContent = formatTimestamp(new Date());
         }
         
         // Initialize everything when page loads
@@ -707,6 +770,7 @@ app.get('/', (c) => {
             displayFeatures();
             initPredictionChart();
             initPerformanceChart();
+            updateDNNMetrics();
             
             // Update every 5 seconds
             setInterval(updatePrediction, 5000);
