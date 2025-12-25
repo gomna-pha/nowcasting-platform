@@ -6,8 +6,6 @@
 ![Hono](https://img.shields.io/badge/Hono-4.11-blue)
 ![Models](https://img.shields.io/badge/Models-FinBERT%20%7C%20XGBoost%20%7C%20DNN-orange)
 
-**Live Demo**: [https://d4f5688c.nowcasting-platform.pages.dev](https://d4f5688c.nowcasting-platform.pages.dev)
-
 **Production URL**: [https://nowcasting-platform.pages.dev](https://nowcasting-platform.pages.dev)
 
 **GitHub**: [https://github.com/gomna-pha/nowcasting-platform](https://github.com/gomna-pha/nowcasting-platform)
