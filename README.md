@@ -2,9 +2,17 @@
 
 **Multi-Model Ensemble System for Short-Term Market Direction Prediction**
 
-![Platform Demo](https://img.shields.io/badge/Status-Live-success)
-![Hono](https://img.shields.io/badge/Hono-4.11-blue)
-![Models](https://img.shields.io/badge/Models-FinBERT%20%7C%20XGBoost%20%7C%20DNN-orange)
+## 🌐 Live Platform
+
+**[🚀 CLICK HERE TO ACCESS LIVE PLATFORM](https://nowcasting-platform.pages.dev)**
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Click%20Here-success?style=for-the-badge&logo=cloudflare)](https://nowcasting-platform.pages.dev)
+[![Status](https://img.shields.io/badge/Status-Live-success)](https://nowcasting-platform.pages.dev)
+[![Platform](https://img.shields.io/badge/Platform-Cloudflare%20Pages-orange)](https://pages.cloudflare.com)
+[![Hono](https://img.shields.io/badge/Hono-4.11-blue)](https://hono.dev)
+[![Models](https://img.shields.io/badge/Models-FinBERT%20%7C%20XGBoost%20%7C%20DNN-orange)](https://nowcasting-platform.pages.dev)
+
+---
 
 **Production URL**: [https://nowcasting-platform.pages.dev](https://nowcasting-platform.pages.dev)
 
