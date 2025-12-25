@@ -6,13 +6,13 @@
 ![Hono](https://img.shields.io/badge/Hono-4.11-blue)
 ![Models](https://img.shields.io/badge/Models-FinBERT%20%7C%20XGBoost%20%7C%20DNN-orange)
 
-🚀 **Live Demo**: [https://3000-id8siplcoceiscnrpr8io-0e616f0a.sandbox.novita.ai](https://3000-id8siplcoceiscnrpr8io-0e616f0a.sandbox.novita.ai)
+**Live Demo**: [https://3000-id8siplcoceiscnrpr8io-0e616f0a.sandbox.novita.ai](https://3000-id8siplcoceiscnrpr8io-0e616f0a.sandbox.novita.ai)
 
-📦 **GitHub**: [https://github.com/gomna-pha/nowcasting-platform](https://github.com/gomna-pha/nowcasting-platform)
+**GitHub**: [https://github.com/gomna-pha/nowcasting-platform](https://github.com/gomna-pha/nowcasting-platform)
 
 ---
 
-## 🎯 Project Overview
+## Project Overview
 
 A real-time financial nowcasting system that predicts short-term market movements by combining:
 - **FinBERT** for sentiment analysis from financial news and social media
@@ -21,13 +21,13 @@ A real-time financial nowcasting system that predicts short-term market movement
 - **Ensemble method** that aggregates predictions with weighted voting
 
 **Key Results:**
-- ✅ **67.8% directional accuracy** on out-of-sample test data
-- ✅ **47ms average latency** for real-time inference
-- ✅ **Outperformed individual models** by 2-4% through ensemble approach
+- **67.8% directional accuracy** on out-of-sample test data
+- **47ms average latency** for real-time inference
+- **Outperformed individual models** by 2-4% through ensemble approach
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Technology Stack
 - **Backend**: Hono (lightweight web framework for Cloudflare Workers)
@@ -45,7 +45,7 @@ A real-time financial nowcasting system that predicts short-term market movement
 
 ---
 
-## 🔬 Model Architecture
+## Model Architecture
 
 ### 1. **FinBERT Sentiment Analysis**
 - Processes financial news and social media sentiment
@@ -74,7 +74,7 @@ A real-time financial nowcasting system that predicts short-term market movement
 
 ---
 
-## 📊 Performance Metrics
+## Performance Metrics
 
 | Metric | FinBERT | XGBoost | DNN | **Ensemble** |
 |--------|---------|---------|-----|------------|
@@ -86,7 +86,7 @@ A real-time financial nowcasting system that predicts short-term market movement
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 ```bash
@@ -120,14 +120,14 @@ npx wrangler pages deploy dist --project-name nowcasting-platform
 
 ---
 
-## 💡 Key Features
+## Key Features
 
 ### Real-Time Dashboard
-- 📈 **Live Predictions**: Market direction forecast with confidence scores
-- 💭 **Sentiment Feed**: Real-time FinBERT sentiment analysis
-- 🔢 **Feature Importance**: XGBoost SHAP value rankings
-- 📊 **Prediction History**: Visual comparison of predicted vs actual
-- 🧠 **Model Performance**: Comparative metrics across all models
+- **Live Predictions**: Market direction forecast with confidence scores
+- **Sentiment Feed**: Real-time FinBERT sentiment analysis
+- **Feature Importance**: XGBoost SHAP value rankings
+- **Prediction History**: Visual comparison of predicted vs actual
+- **Model Performance**: Comparative metrics across all models
 
 ### API-First Design
 - RESTful JSON APIs for easy integration
@@ -137,7 +137,7 @@ npx wrangler pages deploy dist --project-name nowcasting-platform
 
 ---
 
-## 🛠️ Development
+## Development
 
 ### Project Structure
 ```
@@ -164,19 +164,19 @@ npm run clean-port     # Clean port 3000
 
 ---
 
-## 📈 Key Metrics for Resume/Interview
+## Key Metrics for Resume/Interview
 
 **Use these specific numbers:**
-- ✅ 67.8% directional accuracy (baseline: 50%)
-- ✅ 47ms average latency (< 50ms target for institutional systems)
-- ✅ 2.3% improvement from ensemble vs best single model
-- ✅ 20 engineered features (from 45 initial candidates)
-- ✅ 69.1% precision / 68.4% recall (balanced performance)
-- ✅ 36% edge over random prediction [(67.8-50)/50]
+- 67.8% directional accuracy (baseline: 50%)
+- 47ms average latency (< 50ms target for institutional systems)
+- 2.3% improvement from ensemble vs best single model
+- 20 engineered features (from 45 initial candidates)
+- 69.1% precision / 68.4% recall (balanced performance)
+- 36% edge over random prediction [(67.8-50)/50]
 
 ---
 
-## 🎓 Interview Talking Points
+## Interview Talking Points
 
 ### **Why 67.8% accuracy is impressive:**
 - Financial markets are highly efficient → 50% is baseline
@@ -192,7 +192,7 @@ npm run clean-port     # Clean port 3000
 
 ---
 
-## 🌐 URLs
+## URLs
 
 - **Live Demo**: https://3000-id8siplcoceiscnrpr8io-0e616f0a.sandbox.novita.ai
 - **GitHub Repository**: https://github.com/gomna-pha/nowcasting-platform
@@ -200,7 +200,7 @@ npm run clean-port     # Clean port 3000
 
 ---
 
-## 📚 Technologies Used
+## Technologies Used
 
 **Backend:**
 - Hono 4.11+ (Web framework)
@@ -219,28 +219,28 @@ npm run clean-port     # Clean port 3000
 
 ---
 
-## 📝 License
+## License
 
 MIT License - See LICENSE file for details
 
 ---
 
-## 👤 Author
+## Author
 
 **Farouk Umar**  
 M.S. Financial Technology & Analytics, Stevens Institute of Technology  
-📧 fumar@stevens.edu | 💼 [LinkedIn](https://linkedin.com/in/GovSignal) | 🐙 [GitHub](https://github.com/gomna-pha)
+Email: fumar@stevens.edu | [LinkedIn](https://linkedin.com/in/GovSignal) | [GitHub](https://github.com/gomna-pha)
 
 ---
 
-## 🎯 Next Steps
+## Next Steps
 
-1. ✅ Build production-ready web application
-2. ✅ Deploy to Cloudflare Pages
-3. ✅ Setup GitHub repository
-4. ⏳ **Configure Cloudflare API key** (Go to Deploy tab)
-5. ⏳ Deploy to production Cloudflare Pages
+1. Build production-ready web application (Completed)
+2. Deploy to Cloudflare Pages (Completed)
+3. Setup GitHub repository (Completed)
+4. **Configure Cloudflare API key** (Go to Deploy tab)
+5. Deploy to production Cloudflare Pages
 
 ---
 
-**⭐ If you found this project interesting, please star the repository!**
+**If you found this project interesting, please star the repository!**
