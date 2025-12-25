@@ -127,7 +127,7 @@ app.get('/', (c) => {
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a0000 0%, #4d0000 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -138,21 +138,23 @@ app.get('/', (c) => {
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             padding: 25px;
             border-radius: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid #721c24;
         }
         
         .header h1 {
-            color: #2d3748;
+            color: #721c24;
             font-size: 28px;
             margin-bottom: 10px;
+            font-weight: 700;
         }
         
         .header p {
-            color: #718096;
+            color: #2d3748;
             font-size: 14px;
         }
         
@@ -181,7 +183,7 @@ app.get('/', (c) => {
         }
         
         .status-dot.active {
-            background: #48bb78;
+            background: #721c24;
         }
         
         @keyframes pulse {
@@ -197,23 +199,25 @@ app.get('/', (c) => {
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             padding: 20px;
             border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid #e0e0e0;
         }
         
         .card h3 {
-            color: #2d3748;
+            color: #721c24;
             margin-bottom: 15px;
             font-size: 18px;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 700;
         }
         
         .prediction-box {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #721c24 0%, #1a0000 100%);
             color: white;
             padding: 20px;
             border-radius: 12px;
@@ -342,7 +346,7 @@ app.get('/', (c) => {
         }
         
         button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #721c24 0%, #1a0000 100%);
             color: white;
             border: none;
             padding: 12px 24px;
@@ -350,23 +354,25 @@ app.get('/', (c) => {
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: transform 0.2s;
+            transition: transform 0.2s, background 0.2s;
             width: 100%;
             margin-top: 10px;
         }
         
         button:hover {
             transform: translateY(-2px);
+            background: linear-gradient(135deg, #8b2332 0%, #2d0000 100%);
         }
         
         .model-badge {
             display: inline-block;
             padding: 4px 10px;
-            background: #edf2f7;
+            background: #721c24;
             border-radius: 6px;
             font-size: 11px;
-            color: #4a5568;
+            color: #ffffff;
             margin-left: auto;
+            font-weight: 600;
         }
 
         canvas {
@@ -398,7 +404,7 @@ app.get('/', (c) => {
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Real-Time Financial Nowcasting Platform</h1>
+            <h1>Real-Time Financial Nowcasting Platform</h1>
             <p>Multi-Model Ensemble: FinBERT Sentiment + XGBoost + Deep Neural Network</p>
             
             <div class="status-bar">
@@ -427,7 +433,7 @@ app.get('/', (c) => {
         <div class="grid">
             <div class="card">
                 <h3>
-                    📈 Market Direction Forecast
+                    Market Direction Forecast
                     <span class="model-badge">Ensemble</span>
                 </h3>
                 <div class="prediction-box">
@@ -461,7 +467,7 @@ app.get('/', (c) => {
             
             <div class="card">
                 <h3>
-                    💭 FinBERT Sentiment Analysis
+                    FinBERT Sentiment Analysis
                     <span class="model-badge">NLP</span>
                 </h3>
                 <div id="sentimentFeed"></div>
@@ -470,7 +476,7 @@ app.get('/', (c) => {
             
             <div class="card">
                 <h3>
-                    🔢 Feature Importance
+                    Feature Importance
                     <span class="model-badge">XGBoost</span>
                 </h3>
                 <ul class="feature-list" id="featureList"></ul>
@@ -478,24 +484,24 @@ app.get('/', (c) => {
         </div>
         
         <div class="card">
-            <h3>📊 Real-Time Prediction History</h3>
+            <h3>Real-Time Prediction History</h3>
             <div class="chart-container">
                 <canvas id="predictionChart"></canvas>
             </div>
             <div class="chart-legend">
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #667eea;"></div>
+                    <div class="legend-color" style="background: #721c24;"></div>
                     <span>Predicted</span>
                 </div>
                 <div class="legend-item">
-                    <div class="legend-color" style="background: #48bb78;"></div>
+                    <div class="legend-color" style="background: #1a0000;"></div>
                     <span>Actual</span>
                 </div>
             </div>
         </div>
         
         <div class="card">
-            <h3>🧠 Model Performance Metrics</h3>
+            <h3>Model Performance Metrics</h3>
             <div class="chart-container">
                 <canvas id="performanceChart"></canvas>
             </div>
@@ -576,7 +582,7 @@ app.get('/', (c) => {
             const stepX = chartWidth / (data1.length - 1);
             
             // Predicted line
-            ctx.strokeStyle = '#667eea';
+            ctx.strokeStyle = '#721c24';
             ctx.lineWidth = 2;
             ctx.beginPath();
             data1.forEach((val, i) => {
@@ -588,7 +594,7 @@ app.get('/', (c) => {
             ctx.stroke();
             
             // Actual line
-            ctx.strokeStyle = '#48bb78';
+            ctx.strokeStyle = '#1a0000';
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.beginPath();
@@ -632,7 +638,7 @@ app.get('/', (c) => {
             ctx.stroke();
             
             const barWidth = chartWidth / (categories.length * datasets.length + categories.length);
-            const colors = ['#667eea', '#764ba2', '#48bb78'];
+            const colors = ['#721c24', '#8b2332', '#4d0000'];
             
             categories.forEach((cat, i) => {
                 datasets.forEach((data, j) => {
