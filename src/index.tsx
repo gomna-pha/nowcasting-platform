@@ -107,17 +107,37 @@ app.get('/api/features', (c) => {
 })
 
 app.get('/api/history', (c) => {
+  const horizons = ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '8h', '1D', '2D', '1W', '2W', '1M']
   const predictions = []
   const actuals = []
+  const timestamps = []
   
-  for (let i = 0; i < 30; i++) {
-    const pred = Math.random() > 0.5 ? 1 : -1
-    const actual = Math.random() > 0.32 ? pred : -pred
-    predictions.push(pred)
-    actuals.push(actual)
+  // Generate time-series data with trend and noise
+  let trend = 0
+  const volatility = 0.3
+  
+  for (let i = 0; i < horizons.length; i++) {
+    // Add some trend drift
+    trend += (Math.random() - 0.5) * 0.2
+    
+    // Generate prediction with trend + noise
+    const predValue = Math.tanh(trend + (Math.random() - 0.5) * volatility)
+    predictions.push(predValue)
+    
+    // Actual follows prediction with some error (realistic accuracy ~67%)
+    const error = (Math.random() - 0.5) * 0.4
+    const actualValue = Math.random() > 0.33 ? predValue : -predValue + error
+    actuals.push(Math.tanh(actualValue))
+    
+    timestamps.push(horizons[i])
   }
   
-  return c.json({ predictions, actuals })
+  return c.json({ 
+    predictions, 
+    actuals,
+    horizons,
+    timestamp: new Date().toISOString()
+  })
 })
 
 app.get('/api/performance', (c) => {
@@ -643,7 +663,7 @@ app.get('/', (c) => {
         }
         
         // Simple chart drawing function
-        function drawLineChart(canvasId, data1, data2, labels) {
+        function drawLineChart(canvasId, data1, data2, horizons) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
             const width = canvas.parentElement.offsetWidth - 30;
@@ -655,10 +675,8 @@ app.get('/', (c) => {
             const chartWidth = width - padding * 2;
             const chartHeight = height - padding * 2;
             
-            // Define time horizons with labels
-            const horizons = [
-                '1m', '5m', '15m', '30m', '1h', '2h', '4h', '8h', '1D', '2D', '1W', '2W', '1M'
-            ];
+            // Use horizons from API or default
+            const timeHorizons = horizons || ['1m', '5m', '15m', '30m', '1h', '2h', '4h', '8h', '1D', '2D', '1W', '2W', '1M'];
             
             // Microstructure vs Macrodynamics boundaries
             const microEnd = 6; // Up to 4h is microstructure
@@ -669,19 +687,19 @@ app.get('/', (c) => {
             // Draw background zones
             // Microstructure zone (wine tint)
             ctx.fillStyle = 'rgba(114, 28, 36, 0.05)';
-            ctx.fillRect(padding, padding, (microEnd / horizons.length) * chartWidth, chartHeight);
+            ctx.fillRect(padding, padding, (microEnd / timeHorizons.length) * chartWidth, chartHeight);
             
             // Macrodynamics zone (gold tint)
             ctx.fillStyle = 'rgba(184, 134, 11, 0.05)';
-            ctx.fillRect(padding + (microEnd / horizons.length) * chartWidth, padding, 
-                        ((horizons.length - microEnd) / horizons.length) * chartWidth, chartHeight);
+            ctx.fillRect(padding + (microEnd / timeHorizons.length) * chartWidth, padding, 
+                        ((timeHorizons.length - microEnd) / timeHorizons.length) * chartWidth, chartHeight);
             
             // Draw zone separator
             ctx.strokeStyle = '#b8860b';
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
             ctx.beginPath();
-            const separatorX = padding + (microEnd / horizons.length) * chartWidth;
+            const separatorX = padding + (microEnd / timeHorizons.length) * chartWidth;
             ctx.moveTo(separatorX, padding);
             ctx.lineTo(separatorX, height - padding);
             ctx.stroke();
@@ -691,11 +709,11 @@ app.get('/', (c) => {
             ctx.fillStyle = '#721c24';
             ctx.font = 'bold 11px sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('MICROSTRUCTURE', padding + ((microEnd / 2) / horizons.length) * chartWidth, padding - 10);
+            ctx.fillText('MICROSTRUCTURE', padding + ((microEnd / 2) / timeHorizons.length) * chartWidth, padding - 10);
             
             ctx.fillStyle = '#b8860b';
             ctx.fillText('MACRODYNAMICS', 
-                        padding + ((microEnd + (horizons.length - microEnd) / 2) / horizons.length) * chartWidth, 
+                        padding + ((microEnd + (timeHorizons.length - microEnd) / 2) / timeHorizons.length) * chartWidth, 
                         padding - 10);
             
             // Draw axes
@@ -711,8 +729,8 @@ app.get('/', (c) => {
             ctx.fillStyle = '#5d4e37';
             ctx.font = '10px sans-serif';
             ctx.textAlign = 'center';
-            horizons.forEach((label, i) => {
-                const x = padding + (i / (horizons.length - 1)) * chartWidth;
+            timeHorizons.forEach((label, i) => {
+                const x = padding + (i / (timeHorizons.length - 1)) * chartWidth;
                 ctx.fillText(label, x, height - padding + 15);
             });
             
@@ -803,7 +821,7 @@ app.get('/', (c) => {
             try {
                 const response = await fetch('/api/history');
                 const data = await response.json();
-                drawLineChart('predictionChart', data.predictions, data.actuals);
+                drawLineChart('predictionChart', data.predictions, data.actuals, data.horizons);
                 document.getElementById('historyTimestamp').textContent = formatTimestamp(new Date());
             } catch (error) {
                 console.error('Error fetching history:', error);
@@ -872,6 +890,7 @@ app.get('/', (c) => {
             setInterval(updatePrediction, 5000);
             setInterval(refreshSentiment, 10000);
             setInterval(updateDNNMetrics, 8000);
+            setInterval(initPredictionChart, 15000); // Update history chart every 15 seconds
         });
         
         // Redraw charts on resize
