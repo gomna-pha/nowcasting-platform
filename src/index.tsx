@@ -186,81 +186,20 @@ app.get('/', (c) => {
             font-style: italic;
         }
         
-        .horizon-info {
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5e6d3 0%, #fffef7 100%);
-            border-radius: 10px;
-            border: 2px solid #b8860b;
-        }
-        
-        .horizon-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #721c24;
-            margin-bottom: 15px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .horizon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-        
-        .horizon-item {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #721c24;
-        }
-        
-        .horizon-item.macro {
-            border-left-color: #b8860b;
-        }
-        
         .horizon-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #721c24;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .horizon-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background: linear-gradient(135deg, #721c24 0%, #8b2332 100%);
-            color: #fff9e6;
-            border-radius: 4px;
             font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        
-        .horizon-badge.macro {
-            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-            color: #1a0000;
-        }
-        
-        .horizon-description {
-            font-size: 12px;
-            color: #5d4e37;
-            line-height: 1.6;
-            margin-bottom: 8px;
-        }
-        
-        .horizon-timeframe {
-            font-size: 11px;
             color: #8b7355;
+            margin-top: 10px;
+            text-align: center;
             font-weight: 600;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid #e0d5c7;
+        }
+        
+        .horizon-separator {
+            position: absolute;
+            bottom: 50px;
+            border-left: 2px dashed #b8860b;
+            height: 250px;
+            opacity: 0.4;
         }
         
         .status-bar {
@@ -638,67 +577,6 @@ app.get('/', (c) => {
                 </div>
             </div>
             <div class="timestamp" id="historyTimestamp"></div>
-            
-            <div class="horizon-info">
-                <div class="horizon-title">Prediction Horizons & Market Structure</div>
-                <div class="horizon-grid">
-                    <div class="horizon-item">
-                        <div class="horizon-label">
-                            <span class="horizon-badge">Microstructure</span>
-                            Intraday Trading
-                        </div>
-                        <div class="horizon-description">
-                            High-frequency patterns capturing order flow, bid-ask dynamics, and short-term momentum. 
-                            Optimized for algorithmic trading and market-making strategies.
-                        </div>
-                        <div class="horizon-timeframe">
-                            Horizon: 1-minute to 1-hour intervals
-                        </div>
-                    </div>
-                    
-                    <div class="horizon-item">
-                        <div class="horizon-label">
-                            <span class="horizon-badge">Microstructure</span>
-                            Tactical Positioning
-                        </div>
-                        <div class="horizon-description">
-                            Medium-frequency signals incorporating technical indicators, sentiment shifts, and 
-                            volatility regimes. Suitable for swing trading and intraday position management.
-                        </div>
-                        <div class="horizon-timeframe">
-                            Horizon: 1-hour to 4-hour intervals
-                        </div>
-                    </div>
-                    
-                    <div class="horizon-item macro">
-                        <div class="horizon-label">
-                            <span class="horizon-badge macro">Macrodynamics</span>
-                            Strategic Allocation
-                        </div>
-                        <div class="horizon-description">
-                            Macro trends driven by economic indicators, central bank policies, and structural market 
-                            shifts. Designed for portfolio allocation and long-term directional positioning.
-                        </div>
-                        <div class="horizon-timeframe">
-                            Horizon: Daily to weekly intervals
-                        </div>
-                    </div>
-                    
-                    <div class="horizon-item macro">
-                        <div class="horizon-label">
-                            <span class="horizon-badge macro">Macrodynamics</span>
-                            Regime Analysis
-                        </div>
-                        <div class="horizon-description">
-                            Long-term market regime identification capturing bull/bear cycles, correlation breakdowns, 
-                            and systemic risk factors. Critical for risk management and portfolio hedging.
-                        </div>
-                        <div class="horizon-timeframe">
-                            Horizon: Weekly to monthly intervals
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <div class="card">
@@ -777,8 +655,48 @@ app.get('/', (c) => {
             const chartWidth = width - padding * 2;
             const chartHeight = height - padding * 2;
             
+            // Define time horizons with labels
+            const horizons = [
+                '1m', '5m', '15m', '30m', '1h', '2h', '4h', '8h', '1D', '2D', '1W', '2W', '1M'
+            ];
+            
+            // Microstructure vs Macrodynamics boundaries
+            const microEnd = 6; // Up to 4h is microstructure
+            
             // Clear canvas
             ctx.clearRect(0, 0, width, height);
+            
+            // Draw background zones
+            // Microstructure zone (wine tint)
+            ctx.fillStyle = 'rgba(114, 28, 36, 0.05)';
+            ctx.fillRect(padding, padding, (microEnd / horizons.length) * chartWidth, chartHeight);
+            
+            // Macrodynamics zone (gold tint)
+            ctx.fillStyle = 'rgba(184, 134, 11, 0.05)';
+            ctx.fillRect(padding + (microEnd / horizons.length) * chartWidth, padding, 
+                        ((horizons.length - microEnd) / horizons.length) * chartWidth, chartHeight);
+            
+            // Draw zone separator
+            ctx.strokeStyle = '#b8860b';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            const separatorX = padding + (microEnd / horizons.length) * chartWidth;
+            ctx.moveTo(separatorX, padding);
+            ctx.lineTo(separatorX, height - padding);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw zone labels
+            ctx.fillStyle = '#721c24';
+            ctx.font = 'bold 11px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('MICROSTRUCTURE', padding + ((microEnd / 2) / horizons.length) * chartWidth, padding - 10);
+            
+            ctx.fillStyle = '#b8860b';
+            ctx.fillText('MACRODYNAMICS', 
+                        padding + ((microEnd + (horizons.length - microEnd) / 2) / horizons.length) * chartWidth, 
+                        padding - 10);
             
             // Draw axes
             ctx.strokeStyle = '#e2e8f0';
@@ -788,6 +706,15 @@ app.get('/', (c) => {
             ctx.lineTo(padding, height - padding);
             ctx.lineTo(width - padding, height - padding);
             ctx.stroke();
+            
+            // Draw X-axis labels (time horizons)
+            ctx.fillStyle = '#5d4e37';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            horizons.forEach((label, i) => {
+                const x = padding + (i / (horizons.length - 1)) * chartWidth;
+                ctx.fillText(label, x, height - padding + 15);
+            });
             
             // Draw data
             const stepX = chartWidth / (data1.length - 1);
@@ -821,6 +748,7 @@ app.get('/', (c) => {
             // Labels
             ctx.fillStyle = '#718096';
             ctx.font = '11px sans-serif';
+            ctx.textAlign = 'left';
             ctx.fillText('Up', 10, padding);
             ctx.fillText('Down', 10, height - padding);
         }
